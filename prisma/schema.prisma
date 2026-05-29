@@ -1,0 +1,41 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+}
+
+model User {
+  id           String       @id @default(cuid())
+  name         String
+  email        String       @unique
+  passwordHash String
+  createdAt    DateTime     @default(now())
+  diagnostics  Diagnostic[]
+}
+
+model Diagnostic {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+  status    String   @default("in_progress")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  cnpj        String?
+  companyName String?
+  companyData String?
+  websiteUrl  String?
+
+  audioTranscript String?
+
+  answers        String?
+  eisenhowerData String?
+  softwareMap    String?
+
+  overallScore    Float?
+  categoryScores  String?
+  analysis        String?
+  recommendations String?
+}

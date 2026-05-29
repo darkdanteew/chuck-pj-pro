@@ -1,0 +1,25 @@
+services:
+  app:
+    build: .
+    container_name: chuckpjpro
+    restart: always
+    ports:
+      - "3100:3000"
+    environment:
+      - DATABASE_URL=file:./dev.db
+      - NEXTAUTH_SECRET=k8s-prod-secret-chuck-pj-pro-2024-xR9mK2
+      - NEXTAUTH_URL=https://chuckpjpro.xtorus.com
+      - ANTHROPIC_API_KEY=sk-kpa-d42845411abc0a3bdf515ac4174dc90525a9af47bf12841ea8aa217bf6ce5015
+      - ANTHROPIC_BASE_URL=https://api.aibee.cloud
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.chuckpjpro.rule=Host(`chuckpjpro.xtorus.com`)"
+      - "traefik.http.routers.chuckpjpro.entrypoints=websecure"
+      - "traefik.http.routers.chuckpjpro.tls.certresolver=myresolver"
+      - "traefik.http.services.chuckpjpro.loadbalancer.server.port=3000"
+    networks:
+      - traefik-network
+
+networks:
+  traefik-network:
+    external: true
